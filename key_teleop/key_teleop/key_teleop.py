@@ -154,8 +154,8 @@ class PynputCursesKeyTeleop(Node):
         self._key_mappings = {
             keyboard.Key.up: (1.0, 0.0),      # forward
             keyboard.Key.down: (-1.0, 0.0),   # backward
-            keyboard.Key.left: (0.0, 1.0),    # left turn
-            keyboard.Key.right: (0.0, -1.0),  # right turn
+            keyboard.Key.left: (0.0, 0.45),    # left turn
+            keyboard.Key.right: (0.0, -0.45),  # right turn
         }
         
         # Current velocity values
