@@ -122,7 +122,7 @@ class PynputCursesKeyTeleop(Node):
             return
         
         self._interface = interface
-        self._hz = 10.0
+        self._hz = 40.0
         self._running = True
         
         # Speed profiles (number key -> max speed)
