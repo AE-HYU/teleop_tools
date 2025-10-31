@@ -455,9 +455,9 @@ class JoyTeleop(Node):
         elif self.current_mode == 'manual':
             return command_name in ['manual_mode_control', 'default']
 
-        # Autonomous mode: allow autonomous_control
+        # Autonomous mode: allow autonomous_mode_control and autonomous_control
         elif self.current_mode == 'autonomous':
-            return command_name in ['autonomous_control', 'default']
+            return command_name in ['autonomous_mode_control', 'autonomous_control', 'default']
 
         return False
 
