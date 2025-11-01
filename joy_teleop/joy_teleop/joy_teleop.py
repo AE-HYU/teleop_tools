@@ -84,9 +84,10 @@ class JoyTeleopCommand:
         if axes_name in config:
             self.axes = config[axes_name]
 
-        if len(self.buttons) == 0 and len(self.axes) == 0:
-            self.buttons = ['default']
-            # raise JoyTeleopException("No buttons or axes configured for command '{}'".format(name))
+        # Allow empty buttons and axes for commands that should always be active
+        # if len(self.buttons) == 0 and len(self.axes) == 0:
+        #     self.buttons = ['default']
+        #     # raise JoyTeleopException("No buttons or axes configured for command '{}'".format(name))
 
         # Used to short-circuit the run command if there aren't enough buttons in the message.
         self.min_button = 0
@@ -102,6 +103,12 @@ class JoyTeleopCommand:
         self.active = False
 
     def update_active_from_buttons_and_axes(self, joy_state: sensor_msgs.msg.Joy) -> None:
+        # If no buttons and no axes are configured (empty lists), always be active
+        # This allows commands to run continuously without deadman buttons
+        if len(self.buttons) == 0 and len(self.axes) == 0:
+            self.active = True
+            return
+
         self.active = False
 
         if (self.min_button is not None and len(joy_state.buttons) <= self.min_button) and \
