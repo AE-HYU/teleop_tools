@@ -374,9 +374,9 @@ class JoyTeleop(Node):
         mode_buttons = all_config.get('mode_buttons', {})
         self.btn_manual = mode_buttons.get('manual', 2)
         self.btn_neutral = mode_buttons.get('neutral', 0)
-        self.btn_autonomous = mode_buttons.get('autonomous', 9)
+        self.btn_autonomous = mode_buttons.get('autonomous', 7)
         self.btn_stop = mode_buttons.get('stop', 1)
-        self.btn_emergency_stop = mode_buttons.get('emergency_stop', 10)
+        self.btn_emergency_stop = mode_buttons.get('emergency_stop', 8)
 
         # Previous button states
         self.prev_buttons = {}
