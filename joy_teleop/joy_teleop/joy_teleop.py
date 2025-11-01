@@ -463,8 +463,9 @@ class JoyTeleop(Node):
             return command_name in ['manual_mode_control', 'default']
 
         # Autonomous mode: allow autonomous_mode_control and autonomous_control
+        # Do NOT run 'default' in autonomous mode to avoid interfering with navigation
         elif self.current_mode == 'autonomous':
-            return command_name in ['autonomous_mode_control', 'autonomous_control', 'default']
+            return command_name in ['autonomous_mode_control', 'autonomous_control']
 
         return False
 
@@ -542,7 +543,7 @@ class JoyTeleop(Node):
             if self._should_run_command(command.name):
                 # Debug log to see which commands are running
                 if self.current_mode == 'autonomous':
-                    self.get_logger().debug(f'Running command: {command.name}')
+                    self.get_logger().info(f'Running command: {command.name}, active={command.active}')
                 command.run(self, msg)
 
 
