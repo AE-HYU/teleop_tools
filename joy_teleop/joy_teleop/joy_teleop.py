@@ -492,6 +492,7 @@ class JoyTeleop(Node):
         if is_button_pressed(self.btn_autonomous):
             self.current_mode = 'autonomous'
             self.get_logger().info('=== MODE: AUTONOMOUS ===')
+            self.get_logger().info('autonomous_mode_control will run without deadman button')
             mode_msg = String()
             mode_msg.data = self.current_mode
             self.mode_pub.publish(mode_msg)
@@ -532,6 +533,9 @@ class JoyTeleop(Node):
         # Run commands based on current mode
         for command in self.commands:
             if self._should_run_command(command.name):
+                # Debug log to see which commands are running
+                if self.current_mode == 'autonomous':
+                    self.get_logger().debug(f'Running command: {command.name}')
                 command.run(self, msg)
 
 
