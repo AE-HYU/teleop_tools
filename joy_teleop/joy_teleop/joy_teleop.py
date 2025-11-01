@@ -454,6 +454,10 @@ class JoyTeleop(Node):
         if command_name == 'human_control':
             return True  # Always allow, will be controlled by deadman_buttons
 
+        # autonomous_control: Button 5 deadman switch (works in any mode)
+        if command_name == 'autonomous_control':
+            return True  # Always allow, will be controlled by deadman_buttons
+
         # Neutral mode: only default (stop)
         if self.current_mode == 'neutral':
             return command_name == 'default'
@@ -462,10 +466,10 @@ class JoyTeleop(Node):
         elif self.current_mode == 'manual':
             return command_name in ['manual_mode_control', 'default']
 
-        # Autonomous mode: allow autonomous_mode_control and autonomous_control
+        # Autonomous mode: allow autonomous_mode_control
         # Do NOT run 'default' in autonomous mode to avoid interfering with navigation
         elif self.current_mode == 'autonomous':
-            return command_name in ['autonomous_mode_control', 'autonomous_control']
+            return command_name == 'autonomous_mode_control'
 
         return False
 
@@ -538,8 +542,18 @@ class JoyTeleop(Node):
             self.prev_buttons[i] = msg.buttons[i]
 
         # Run commands based on current mode
+        # In autonomous mode, prioritize autonomous_mode_control over autonomous_control
+        autonomous_mode_ran = False
         for command in self.commands:
             if self._should_run_command(command.name):
+                # Skip autonomous_control if autonomous_mode_control is active
+                if self.current_mode == 'autonomous':
+                    if command.name == 'autonomous_mode_control':
+                        command.run(self, msg)
+                        autonomous_mode_ran = True
+                        continue
+                    elif command.name == 'autonomous_control' and autonomous_mode_ran:
+                        continue
                 command.run(self, msg)
 
 
