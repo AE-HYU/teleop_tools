@@ -508,10 +508,10 @@ class JoyTeleop(Node):
             mode_msg.data = self.current_mode
             self.mode_pub.publish(mode_msg)
 
-        # Stop button: stop and go to neutral
+        # Stop button: stop and go to manual
         if is_button_pressed(self.btn_stop):
-            self.current_mode = 'neutral'
-            self.get_logger().info('>>> STOP - MODE: NEUTRAL <<<')
+            self.current_mode = 'manual'
+            self.get_logger().info('>>> STOP - MODE: MANUAL <<<')
             # Force run emergency_stop command
             for command in self.commands:
                 if command.name == 'emergency_stop':
@@ -522,10 +522,10 @@ class JoyTeleop(Node):
             mode_msg.data = self.current_mode
             self.mode_pub.publish(mode_msg)
 
-        # Emergency stop button: stop and go to manual mode
+        # Emergency stop button: stop and go to neutral mode
         if is_button_pressed(self.btn_emergency_stop):
-            self.current_mode = 'manual'
-            self.get_logger().warn('!!! EMERGENCY STOP - MODE: MANUAL !!!')
+            self.current_mode = 'neutral'
+            self.get_logger().warn('!!! EMERGENCY STOP - MODE: NEUTRAL !!!')
             # Force run emergency_stop command multiple times
             for command in self.commands:
                 if command.name == 'emergency_stop':
